@@ -29,6 +29,22 @@
                 <label for="participants">参加人数</label>
                 <input type="number" id="participants" placeholder="例: 4" required>
             </div>
+            <div class="form-group">
+                <label for="rounding">切り上げますか？</label>
+                <select id="rounding" onchange="toggleRoundingOptions()">
+                    <option value="no">いいえ</option>
+                    <option value="yes">はい</option>
+                </select>
+            </div>
+            <div class="form-group" id="rounding-options" style="display: none;">
+                <label>切り上げ単位を選択してください</label>
+                <div>
+                    <button type="button" class="rounding-button" data-unit="50" onclick="selectRoundingUnit(50)" disabled>50円</button>
+                    <button type="button" class="rounding-button" data-unit="100" onclick="selectRoundingUnit(100)" disabled>100円</button>
+                    <button type="button" class="rounding-button" data-unit="custom" onclick="selectCustomRounding()" disabled>その他</button>
+                </div>
+                <input type="number" id="custom-rounding-unit" placeholder="単位を入力 (例: 200)" style="display: none;" disabled>
+            </div>
             <button type="button" onclick="calculate()">計算する</button>
         </form>
         <div id="result" class="result" style="display: none;">
@@ -41,54 +57,81 @@
         </div>
     </main>
     <script>
+        let selectedRoundingUnit = null; // 切り上げ単位を記録する変数
+
+        // 切り上げオプションを有効/無効化
+        function toggleRoundingOptions() {
+            const roundingSelect = document.getElementById('rounding').value;
+            const roundingOptions = document.getElementById('rounding-options');
+            const buttons = document.querySelectorAll('.rounding-button');
+            if (roundingSelect === 'yes') {
+                roundingOptions.style.display = 'block';
+                buttons.forEach(button => button.disabled = false); // ボタンを有効化
+            } else {
+                roundingOptions.style.display = 'none';
+                buttons.forEach(button => button.disabled = true); // ボタンを無効化
+                document.getElementById('custom-rounding-unit').style.display = 'none';
+                document.getElementById('custom-rounding-unit').disabled = true;
+                selectedRoundingUnit = null; // リセット
+            }
+        }
+
+        // 切り上げ単位をボタンで選択
+        function selectRoundingUnit(unit) {
+            selectedRoundingUnit = unit;
+            document.getElementById('custom-rounding-unit').style.display = 'none';
+            document.getElementById('custom-rounding-unit').disabled = true;
+            const buttons = document.querySelectorAll('.rounding-button');
+            buttons.forEach(button => button.style.backgroundColor = ''); // 全ボタンの色をリセット
+            document.querySelector(`button[data-unit="${unit}"]`).style.backgroundColor = '#4CAF50'; // 選択されたボタンの色を変更
+        }
+
+        // その他（カスタム単位）の場合
+        function selectCustomRounding() {
+            selectedRoundingUnit = null; // カスタム単位をリセット
+            document.getElementById('custom-rounding-unit').style.display = 'inline-block';
+            document.getElementById('custom-rounding-unit').disabled = false;
+            const buttons = document.querySelectorAll('.rounding-button');
+            buttons.forEach(button => button.style.backgroundColor = ''); // 全ボタンの色をリセット
+            document.querySelector(`button[data-unit="custom"]`).style.backgroundColor = '#4CAF50'; // 選択されたボタンの色を変更
+        }
+
         function calculate() {
-            // 各入力値を取得
             const gymnasiumFee = parseFloat(document.getElementById('gymnasium-fee').value);
             const shuttleFee = parseFloat(document.getElementById('shuttle-fee').value);
             const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
             const participants = parseFloat(document.getElementById('participants').value);
+            const roundingSelect = document.getElementById('rounding').value;
+            const customRoundingUnit = parseFloat(document.getElementById('custom-rounding-unit').value);
 
-            // エラーメッセージを格納する配列
             const errors = [];
 
-            // 各入力値のチェック
-            if (isNaN(gymnasiumFee) || gymnasiumFee < 0) {
-                errors.push('・体育館代は0以上の値を入力してください');
+            // 入力値チェック
+            if (isNaN(gymnasiumFee) || gymnasiumFee < 0) errors.push('・体育館代は0以上の値を入力してください');
+            if (isNaN(shuttleFee) || shuttleFee < 0) errors.push('・シャトル1個の値段は0以上の値を入力してください');
+            if (isNaN(numberOfPieces) || numberOfPieces < 0) errors.push('・シャトルの使用個数は0以上の値を入力してください');
+            if (isNaN(participants) || participants <= 0) errors.push('・参加人数は1以上の値を入力してください');
+            if (roundingSelect === 'yes' && selectedRoundingUnit === null && (isNaN(customRoundingUnit) || customRoundingUnit <= 0)) {
+                errors.push('・切り上げ単位を正しく入力してください');
             }
 
-            if (isNaN(shuttleFee) || shuttleFee < 0) {
-                errors.push('・シャトル1個の値段は0以上の値を入力してください');
-            }
-
-            if (isNaN(numberOfPieces) || numberOfPieces < 0) {
-                errors.push('・シャトルの使用個数は0以上の値を入力してください');
-            }
-
-            if (isNaN(participants) || participants <= 0) {
-                errors.push('・参加人数は1以上の値を入力してください');
-            }
-
-            // エラーがあれば表示して処理を終了
             if (errors.length > 0) {
-                alert(errors.join('\n')); // エラーを改行してアラートに表示
+                alert(errors.join('\n'));
                 return;
             }
 
-            // 計算処理
             const totalCost = gymnasiumFee + (shuttleFee * numberOfPieces);
-            const costPerPerson = Math.ceil(totalCost / participants / 100) * 100; // 100円単位で切り上げ
+            let costPerPerson;
 
-            // Web画面用の結果を表示
-            document.getElementById('result-text').innerText = `一人当たりの金額は ${costPerPerson} 円です。`;
+            if (roundingSelect === 'yes') {
+                const roundingUnit = selectedRoundingUnit || customRoundingUnit;
+                costPerPerson = Math.ceil(totalCost / participants / roundingUnit) * roundingUnit;
+            } else {
+                costPerPerson = totalCost / participants;
+            }
+
+            document.getElementById('result-text').innerText = `一人当たりの金額は ${Math.round(costPerPerson)} 円です。`;
             document.getElementById('result').style.display = 'block';
-
-            // LINE送信用のテキストを生成
-            const lineMessage = `計算結果:\n体育館代: ${gymnasiumFee}円\nシャトル代: ${shuttleFee}円 × ${numberOfPieces}個\n参加人数: ${participants}人\n一人当たりの金額: ${costPerPerson}円`;
-
-            // LINE送信ボタンの設定
-            const lineShareButton = document.getElementById('line-share-button');
-            lineShareButton.href = `https://line.me/R/msg/text/?${encodeURIComponent(lineMessage)}`;
-            lineShareButton.style.display = 'inline-block';
         }
     </script>
 </body>
