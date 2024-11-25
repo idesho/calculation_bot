@@ -78,14 +78,16 @@
             const totalCost = gymnasiumFee + (shuttleFee * numberOfPieces);
             const costPerPerson = Math.ceil(totalCost / participants / 100) * 100; // 100円単位で切り上げ
 
-            // 結果を表示
-            const resultText = `計算結果:\n体育館代: ${gymnasiumFee}円\nシャトル代: ${shuttleFee}円 × ${numberOfPieces}個\n参加人数: ${participants}人\n一人当たりの金額: ${costPerPerson}円`;
-            document.getElementById('result-text').innerText = resultText;
+            // Web画面用の結果を表示
+            document.getElementById('result-text').innerText = `一人当たりの金額は ${costPerPerson} 円です。`;
             document.getElementById('result').style.display = 'block';
+
+            // LINE送信用のテキストを生成
+            const lineMessage = `計算結果:\n体育館代: ${gymnasiumFee}円\nシャトル代: ${shuttleFee}円 × ${numberOfPieces}個\n参加人数: ${participants}人\n一人当たりの金額: ${costPerPerson}円`;
 
             // LINE送信ボタンの設定
             const lineShareButton = document.getElementById('line-share-button');
-            lineShareButton.href = `https://line.me/R/msg/text/?${encodeURIComponent(resultText)}`;
+            lineShareButton.href = `https://line.me/R/msg/text/?${encodeURIComponent(lineMessage)}`;
             lineShareButton.style.display = 'inline-block';
         }
     </script>
