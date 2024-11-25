@@ -38,19 +38,28 @@
     </main>
     <script>
         function calculate() {
+            // 各入力値を取得
             const gymnasiumFee = parseFloat(document.getElementById('gymnasium-fee').value);
             const shuttleFee = parseFloat(document.getElementById('shuttle-fee').value);
             const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
             const participants = parseFloat(document.getElementById('participants').value);
 
-            if (isNaN(gymnasiumFee) || isNaN(shuttleFee) || isNaN(numberOfPieces) || isNaN(participants) || participants <= 0) {
-                alert('すべての項目を正しく入力してください。');
+            // 入力値のバリデーション（マイナス値と無効値のチェック）
+            if (
+                isNaN(gymnasiumFee) || gymnasiumFee < 0 ||
+                isNaN(shuttleFee) || shuttleFee < 0 ||
+                isNaN(numberOfPieces) || numberOfPieces < 0 ||
+                isNaN(participants) || participants <= 0
+            ) {
+                alert('すべての項目を正しく入力してください（マイナス値は無効です）。');
                 return;
             }
 
+            // 計算処理
             const totalCost = gymnasiumFee + (shuttleFee * numberOfPieces);
-            const costPerPerson = Math.ceil(totalCost / participants / 100) * 100;
+            const costPerPerson = Math.ceil(totalCost / participants / 100) * 100; // 100円単位で切り上げ
 
+            // 結果を表示
             document.getElementById('result-text').innerText = `一人当たりの金額は ${costPerPerson} 円です。`;
             document.getElementById('result').style.display = 'block';
         }
