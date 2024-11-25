@@ -105,6 +105,7 @@
             const shuttleFee = parseFloat(document.getElementById('shuttle-fee').value);
             const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
             const participants = parseFloat(document.getElementById('participants').value);
+            const isRounding = document.querySelector('input[name="rounding"]:checked').value === 'yes';
             const customRoundingUnit = parseFloat(document.getElementById('custom-rounding-unit').value);
 
             const errors = [];
@@ -114,8 +115,12 @@
             if (isNaN(shuttleFee) || shuttleFee < 0) errors.push('・シャトル1個の値段は0以上の値を入力してください');
             if (isNaN(numberOfPieces) || numberOfPieces < 0) errors.push('・シャトルの使用個数は0以上の値を入力してください');
             if (isNaN(participants) || participants <= 0) errors.push('・参加人数は1以上の値を入力してください');
-            if (selectedRoundingUnit === null && (isNaN(customRoundingUnit) || customRoundingUnit <= 0)) {
-                errors.push('・切り上げ単位を正しく入力してください');
+
+            // 切り上げが有効な場合にのみバリデーションを適用
+            if (isRounding) {
+                if (selectedRoundingUnit === null && (isNaN(customRoundingUnit) || customRoundingUnit <= 0)) {
+                    errors.push('・切り上げ単位を正しく入力してください');
+                }
             }
 
             if (errors.length > 0) {
@@ -126,7 +131,7 @@
             const totalCost = gymnasiumFee + (shuttleFee * numberOfPieces);
             let costPerPerson;
 
-            if (selectedRoundingUnit !== null || !isNaN(customRoundingUnit)) {
+            if (isRounding) {
                 const roundingUnit = selectedRoundingUnit || customRoundingUnit;
                 costPerPerson = Math.ceil(totalCost / participants / roundingUnit) * roundingUnit;
             } else {
