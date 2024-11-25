@@ -44,14 +44,24 @@
             const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
             const participants = parseFloat(document.getElementById('participants').value);
 
-            // 入力値のバリデーション（マイナス値と無効値のチェック）
-            if (
-                isNaN(gymnasiumFee) || gymnasiumFee < 0 ||
-                isNaN(shuttleFee) || shuttleFee < 0 ||
-                isNaN(numberOfPieces) || numberOfPieces < 0 ||
-                isNaN(participants) || participants <= 0
-            ) {
-                alert('すべての項目を正しく入力してください（マイナス値は無効です）。');
+            // 各入力値のチェックとエラーメッセージ
+            if (isNaN(gymnasiumFee) || gymnasiumFee < 0) {
+                alert('体育館代は0以上の値を入力してください。');
+                return;
+            }
+
+            if (isNaN(shuttleFee) || shuttleFee < 0) {
+                alert('シャトル1個の値段は0以上の値を入力してください。');
+                return;
+            }
+
+            if (isNaN(numberOfPieces) || numberOfPieces < 0) {
+                alert('シャトルの使用個数は0以上の値を入力してください。');
+                return;
+            }
+
+            if (isNaN(participants) || participants <= 0) {
+                alert('参加人数は1以上の値を入力してください。');
                 return;
             }
 
