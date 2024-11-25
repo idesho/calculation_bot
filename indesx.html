@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算ページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>計算ツール</h1>
+    <p>以下に必要な情報を入力してください。</p>
+
+    <form id="calculation-form">
+        <div class="form-group">
+            <label for="gymnasium-fee">体育館代 (円):</label>
+            <input type="number" id="gymnasium-fee" placeholder="例: 3000" required>
+        </div>
+        <div class="form-group">
+            <label for="shuttle-fee">シャトル1個の値段 (円):</label>
+            <input type="number" id="shuttle-fee" placeholder="例: 200" required>
+        </div>
+        <div class="form-group">
+            <label for="number-of-pieces">シャトルの使用個数:</label>
+            <input type="number" id="number-of-pieces" placeholder="例: 10" required>
+        </div>
+        <div class="form-group">
+            <label for="participants">参加人数:</label>
+            <input type="number" id="participants" placeholder="例: 4" required>
+        </div>
+        <button type="button" onclick="calculate()">計算する</button>
+    </form>
+
+    <div id="result" class="result" style="display: none;">
+        <h2>計算結果</h2>
+        <p id="result-text"></p>
+    </div>
+
+    <script>
+        function calculate() {
+            // 入力値を取得
+            const gymnasiumFee = parseFloat(document.getElementById('gymnasium-fee').value);
+            const shuttleFee = parseFloat(document.getElementById('shuttle-fee').value);
+            const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
+            const participants = parseFloat(document.getElementById('participants').value);
+
+            // 入力チェック
+            if (isNaN(gymnasiumFee) || isNaN(shuttleFee) || isNaN(numberOfPieces) || isNaN(participants) || participants <= 0) {
+                alert('すべての項目を正しく入力してください。');
+                return;
+            }
+
+            // 計算
+            const totalCost = gymnasiumFee + (shuttleFee * numberOfPieces);
+            const costPerPerson = Math.ceil(totalCost / participants / 100) * 100; // 100円単位で切り上げ
+
+            // 結果を表示
+            document.getElementById('result-text').innerText = `一人当たりの金額は ${costPerPerson} 円です。`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
