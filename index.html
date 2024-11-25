@@ -44,24 +44,29 @@
             const numberOfPieces = parseFloat(document.getElementById('number-of-pieces').value);
             const participants = parseFloat(document.getElementById('participants').value);
 
-            // 各入力値のチェックとエラーメッセージ
+            // エラーメッセージを格納する配列
+            const errors = [];
+
+            // 各入力値のチェック
             if (isNaN(gymnasiumFee) || gymnasiumFee < 0) {
-                alert('体育館代は0以上の値を入力してください。');
-                return;
+                errors.push('体育館代は0以上の値を入力してください。');
             }
 
             if (isNaN(shuttleFee) || shuttleFee < 0) {
-                alert('シャトル1個の値段は0以上の値を入力してください。');
-                return;
+                errors.push('シャトル1個の値段は0以上の値を入力してください。');
             }
 
             if (isNaN(numberOfPieces) || numberOfPieces < 0) {
-                alert('シャトルの使用個数は0以上の値を入力してください。');
-                return;
+                errors.push('シャトルの使用個数は0以上の値を入力してください。');
             }
 
             if (isNaN(participants) || participants <= 0) {
-                alert('参加人数は1以上の値を入力してください。');
+                errors.push('参加人数は1以上の値を入力してください。');
+            }
+
+            // エラーがあれば表示して処理を終了
+            if (errors.length > 0) {
+                alert(errors.join('\n')); // エラーを改行してアラートに表示
                 return;
             }
 
