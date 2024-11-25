@@ -1,83 +1,101 @@
-/* 基本スタイル */
+/* 全体のレイアウトを中央揃え */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-header h1 {
-    text-align: center;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center; /* 左右中央揃え */
+    align-items: center; /* 縦中央揃え */
+    min-height: 100vh; /* 画面全体の高さを確保 */
+    background-color: #f9f9f9; /* 背景色を薄いグレーに */
 }
 
-nav ul li {
-    margin: 0 10px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-}
-
-input[type="number"], button {
+/* メインコンテナの設定 */
+main {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
+    max-width: 600px; /* 最大幅を600pxに制限 */
+    margin: 0 auto; /* 左右中央揃え */
+    padding: 20px;
+    background: #fff; /* 背景を白に設定 */
+    border-radius: 8px; /* 角丸に設定 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボックスの影を追加 */
 }
 
+/* ヘッダーのスタイル */
+header h1 {
+    text-align: center; /* テキストを中央揃え */
+    font-size: 24px; /* フォントサイズを大きく */
+}
+
+/* 各フォームグループ */
+.form-group {
+    margin-bottom: 20px; /* 各フォーム間の余白を調整 */
+}
+
+/* ラベルと入力欄のスタイル */
+label {
+    display: block; /* ラベルをブロック表示に */
+    margin-bottom: 5px; /* ラベルと入力欄の間隔を調整 */
+}
+
+input[type="number"] {
+    width: 100%; /* 入力欄の幅を100%に */
+    padding: 10px; /* 内側の余白を追加 */
+    margin-bottom: 10px; /* 下部に余白を追加 */
+    border: 1px solid #ddd; /* 薄い枠線を追加 */
+    border-radius: 4px; /* 角丸に設定 */
+    box-sizing: border-box; /* パディングを含めた幅を計算 */
+}
+
+/* ボタンのスタイル */
 button {
-    background-color: #4CAF50;
+    width: 100%; /* ボタンを幅いっぱいに */
+    padding: 10px; /* 内側の余白を調整 */
+    background-color: #4CAF50; /* 緑色 */
     color: white;
+    font-size: 16px; /* フォントサイズを調整 */
     border: none;
+    border-radius: 4px; /* 角丸に設定 */
     cursor: pointer;
+    transition: background-color 0.3s; /* 色変更をアニメーション */
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* ボタンホバー時の色 */
 }
 
+/* 結果表示のスタイル */
 .result {
     margin-top: 20px;
-    background: #f9f9f9;
     padding: 15px;
+    background-color: #f1f1f1; /* 結果表示の背景色 */
     border: 1px solid #ddd;
+    border-radius: 4px; /* 角丸 */
+    font-size: 16px; /* フォントサイズを調整 */
 }
 
-/* レスポンシブデザイン */
+/* スマホ用レスポンシブデザイン */
 @media (max-width: 768px) {
+    main {
+        padding: 15px; /* 小さい画面での余白を調整 */
+    }
+
     header h1 {
-        font-size: 20px;
-    }
-
-    nav ul {
-        flex-direction: column;
-    }
-
-    input[type="number"], button {
-        font-size: 16px;
+        font-size: 20px; /* タイトルのフォントを少し小さく */
     }
 }
 
 @media (max-width: 480px) {
     body {
-        font-size: 14px;
+        padding: 10px; /* スマホ画面での外側の余白を調整 */
     }
 
     input[type="number"], button {
-        width: 100%;
+        font-size: 14px; /* 入力欄とボタンの文字サイズを調整 */
+    }
+
+    .result {
+        font-size: 14px; /* 結果表示の文字サイズを調整 */
     }
 }
