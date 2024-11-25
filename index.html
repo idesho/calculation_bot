@@ -40,12 +40,6 @@
             </div>
             <div class="form-group" id="rounding-options" style="display: none;">
                 <label>切り上げ単位を選択してください</label>
-                <span class="help-icon" onclick="toggleHelp()"></span>
-                <div id="help-bubble" class="help-bubble" style="display: none;">
-                    <b>例:</b> 一人当たりの金額が「230円」の場合、<br>
-                    - 50円単位では「250円」<br>
-                    - 100円単位では「300円」になります。
-                </div>
                 <div>
                     <label>
                         <input type="radio" name="rounding-unit" value="50" onclick="selectRoundingUnit(50)"> 50円
@@ -80,19 +74,15 @@
                 roundingOptions.style.display = 'block';
             } else {
                 roundingOptions.style.display = 'none';
+
+                // ラジオボタンとカスタム入力欄をリセット
+                document.querySelectorAll('input[name="rounding-unit"]').forEach(radio => {
+                    radio.checked = false;
+                });
                 document.getElementById('custom-rounding-unit').style.display = 'none';
                 document.getElementById('custom-rounding-unit').disabled = true;
+                document.getElementById('custom-rounding-unit').value = '';
                 selectedRoundingUnit = null; // 切り上げ単位をリセット
-            }
-        }
-
-        // ヘルプバブルの表示/非表示を切り替え
-        function toggleHelp() {
-            const helpBubble = document.getElementById('help-bubble');
-            if (helpBubble.style.display === 'none') {
-                helpBubble.style.display = 'block';
-            } else {
-                helpBubble.style.display = 'none';
             }
         }
 
