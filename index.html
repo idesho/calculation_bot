@@ -138,8 +138,16 @@
                 costPerPerson = totalCost / participants;
             }
 
+            // 表示用
             document.getElementById('result-text').innerText = `一人当たりの金額は ${Math.round(costPerPerson)} 円です。`;
             document.getElementById('result').style.display = 'block';
+
+            // LINE送信用のテキストを生成
+            const lineMessage = `計算結果:\n体育館代: ${gymnasiumFee}円\nシャトル代: ${shuttleFee}円 × ${numberOfPieces}個\n参加人数: ${participants}人\n一人当たりの金額: ${Math.round(costPerPerson)}円`;
+            const lineShareUrl = `https://line.me/R/msg/text/?${encodeURIComponent(lineMessage)}`;
+            const lineShareButton = document.getElementById('line-share-button');
+            lineShareButton.href = lineShareUrl;
+            lineShareButton.style.display = 'block';
         }
     </script>
 </body>
