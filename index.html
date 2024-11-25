@@ -34,6 +34,10 @@
         <div id="result" class="result" style="display: none;">
             <h2>計算結果</h2>
             <p id="result-text"></p>
+            <!-- LINE送信ボタン -->
+            <a id="line-share-button" href="#" target="_blank" style="display: none;">
+                <button>LINEで結果を送信</button>
+            </a>
         </div>
     </main>
     <script>
@@ -75,8 +79,14 @@
             const costPerPerson = Math.ceil(totalCost / participants / 100) * 100; // 100円単位で切り上げ
 
             // 結果を表示
-            document.getElementById('result-text').innerText = `一人当たりの金額は ${costPerPerson} 円です。`;
+            const resultText = `計算結果:\n体育館代: ${gymnasiumFee}円\nシャトル代: ${shuttleFee}円 × ${numberOfPieces}個\n参加人数: ${participants}人\n一人当たりの金額: ${costPerPerson}円`;
+            document.getElementById('result-text').innerText = resultText;
             document.getElementById('result').style.display = 'block';
+
+            // LINE送信ボタンの設定
+            const lineShareButton = document.getElementById('line-share-button');
+            lineShareButton.href = `https://line.me/R/msg/text/?${encodeURIComponent(resultText)}`;
+            lineShareButton.style.display = 'inline-block';
         }
     </script>
 </body>
