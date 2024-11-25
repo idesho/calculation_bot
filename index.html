@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>計算ページ</title>
+    <title>計算ツール - 必要な情報を入力してください</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,19 +14,19 @@
         <p>以下に必要な情報を入力してください。</p>
         <form id="calculation-form">
             <div class="form-group">
-                <label for="gymnasium-fee">体育館代 (円):</label>
+                <label for="gymnasium-fee">体育館代 (円)</label>
                 <input type="number" id="gymnasium-fee" placeholder="例: 3000" required>
             </div>
             <div class="form-group">
-                <label for="shuttle-fee">シャトル1個の値段 (円):</label>
+                <label for="shuttle-fee">シャトル1個の値段 (円)</label>
                 <input type="number" id="shuttle-fee" placeholder="例: 200" required>
             </div>
             <div class="form-group">
-                <label for="number-of-pieces">シャトルの使用個数:</label>
+                <label for="number-of-pieces">シャトルの使用個数</label>
                 <input type="number" id="number-of-pieces" placeholder="例: 10" required>
             </div>
             <div class="form-group">
-                <label for="participants">参加人数:</label>
+                <label for="participants">参加人数</label>
                 <input type="number" id="participants" placeholder="例: 4" required>
             </div>
             <button type="button" onclick="calculate()">計算する</button>
@@ -49,19 +49,19 @@
 
             // 各入力値のチェック
             if (isNaN(gymnasiumFee) || gymnasiumFee < 0) {
-                errors.push('体育館代は0以上の値を入力してください。');
+                errors.push('・体育館代は0以上の値を入力してください');
             }
 
             if (isNaN(shuttleFee) || shuttleFee < 0) {
-                errors.push('シャトル1個の値段は0以上の値を入力してください。');
+                errors.push('・シャトル1個の値段は0以上の値を入力してください');
             }
 
             if (isNaN(numberOfPieces) || numberOfPieces < 0) {
-                errors.push('シャトルの使用個数は0以上の値を入力してください。');
+                errors.push('・シャトルの使用個数は0以上の値を入力してください');
             }
 
             if (isNaN(participants) || participants <= 0) {
-                errors.push('参加人数は1以上の値を入力してください。');
+                errors.push('・参加人数は1以上の値を入力してください');
             }
 
             // エラーがあれば表示して処理を終了
