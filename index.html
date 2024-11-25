@@ -40,10 +40,10 @@
             </div>
             <div class="form-group" id="rounding-options" style="display: none;">
                 <label>切り上げ単位を選択してください</label>
-                <button type="button" class="help-icon" onclick="toggleHelp()">?</button>
+                <span class="help-icon" onclick="toggleHelp()"></span>
                 <div id="help-bubble" class="help-bubble" style="display: none;">
-                    <b>例:</b> 一人当たりの金額が「253円」の場合、<br>
-                    - 50円単位では「300円」<br>
+                    <b>例:</b> 一人当たりの金額が「230円」の場合、<br>
+                    - 50円単位では「250円」<br>
                     - 100円単位では「300円」になります。
                 </div>
                 <div>
@@ -51,7 +51,7 @@
                         <input type="radio" name="rounding-unit" value="50" onclick="selectRoundingUnit(50)"> 50円
                     </label>
                     <label>
-                        <input type="radio" name="rounding-unit" value="100" onclick="selectRoundingUnit(100)" checked> 100円
+                        <input type="radio" name="rounding-unit" value="100" onclick="selectRoundingUnit(100)"> 100円
                     </label>
                     <label>
                         <input type="radio" name="rounding-unit" value="custom" onclick="selectCustomRounding()"> その他
@@ -71,14 +71,13 @@
         </div>
     </main>
     <script>
-        let selectedRoundingUnit = 100; // デフォルトは100円
+        let selectedRoundingUnit = null; // 初期状態は未選択
 
         // 切り上げオプションの表示/非表示を切り替え
         function toggleRoundingOptions(isRounding) {
             const roundingOptions = document.getElementById('rounding-options');
             if (isRounding) {
                 roundingOptions.style.display = 'block';
-                selectedRoundingUnit = 100; // デフォルトを100円に設定
             } else {
                 roundingOptions.style.display = 'none';
                 document.getElementById('custom-rounding-unit').style.display = 'none';
